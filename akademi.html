@@ -1,0 +1,397 @@
+<!-- === Devzuat Akademi | Fragment === -->
+<div class="akademi-page" id="akademi-root">
+  <!-- HERO / SEARCH -->
+  <section class="ak-hero">
+    <div class="ak-hero-inner">
+      <h1>Devzuat Akademi</h1>
+      <p class="ak-sub">Hukuk fakültesi öğrencileri için hızlı erişim: dersler, ödevler, slaytlar ve sık geçen mevzuatlar.</p>
+
+      <div class="ak-search">
+        <input id="ak-search" type="text" placeholder="Ders, konu, mevzuat ara…" />
+        <button id="ak-search-btn" aria-label="Ara">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1016 9.5c0 1.61-.59 3.09-1.57 4.23l.27.27v.79l5 5-1.5 1.5-5-5zm-5 0C8.01 14 6 11.99 6 9.5S8.01 5 10.5 5 15 7.01 15 9.5 12.99 14 10.5 14z"/>
+          </svg>
+          Ara
+        </button>
+      </div>
+
+      <div class="ak-tags" id="ak-quick-tags">
+        <button class="ak-chip" data-term="Anayasa">Anayasa</button>
+        <button class="ak-chip" data-term="Ceza">Ceza</button>
+        <button class="ak-chip" data-term="Medeni">Medeni</button>
+        <button class="ak-chip" data-term="İdare">İdare</button>
+        <button class="ak-chip" data-term="Vergi">Vergi</button>
+        <button class="ak-chip" data-term="Ticaret">Ticaret</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK ACCESS -->
+  <section class="ak-quick">
+    <div class="ak-grid">
+      <a class="ak-card" data-anchor="#ak-courses">
+        <div class="ak-icon ak-i-books"></div>
+        <h3>Dersler</h3>
+        <p>Müfredat, özetler ve ilgili mevzuat.</p>
+      </a>
+      <a class="ak-card" data-anchor="#ak-resources">
+        <div class="ak-icon ak-i-slides"></div>
+        <h3>Slaytlar</h3>
+        <p>Ders slaytları ve sunumlar.</p>
+      </a>
+      <a class="ak-card" data-anchor="#ak-resources">
+        <div class="ak-icon ak-i-assign"></div>
+        <h3>Ödevler</h3>
+        <p>Güncel ödevler ve teslim tarihleri.</p>
+      </a>
+      <a class="ak-card" data-anchor="#ak-planner">
+        <div class="ak-icon ak-i-check"></div>
+        <h3>Çalışma Planı</h3>
+        <p>Haftalık plan ve görevler.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- COURSES / TABS -->
+  <section class="ak-section" id="ak-courses">
+    <div class="ak-head">
+      <h2>Dersler</h2>
+      <div class="ak-tabs" role="tablist" aria-label="Sınıflar">
+        <button class="ak-tab is-active" data-tab="y1" role="tab" aria-selected="true">1. Sınıf</button>
+        <button class="ak-tab" data-tab="y2" role="tab" aria-selected="false">2. Sınıf</button>
+        <button class="ak-tab" data-tab="y3" role="tab" aria-selected="false">3. Sınıf</button>
+        <button class="ak-tab" data-tab="y4" role="tab" aria-selected="false">4. Sınıf</button>
+        <button class="ak-tab" data-tab="y5" role="tab" aria-selected="false">5. Sınıf</button>
+      </div>
+    </div>
+
+    <div class="ak-tabpanes">
+      <!-- Year 1 -->
+      <div class="ak-pane is-active" data-pane="y1">
+        <div class="ak-list">
+          <article class="ak-course" data-title="Anayasa Hukuku">
+            <h3>Anayasa Hukuku</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="Anayasa">Özet</button>
+              <button class="ak-link" data-term="Anayasa Kanunu">Mevzuat</button>
+              <button class="ak-link" data-term="Anayasa Hukuku Slayt">Slayt</button>
+            </div>
+          </article>
+          <article class="ak-course" data-title="Medeni Hukuk">
+            <h3>Medeni Hukuk</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="Medeni Kanun">Mevzuat</button>
+              <button class="ak-link" data-term="Medeni Hukuk Özet">Özet</button>
+            </div>
+          </article>
+          <article class="ak-course" data-title="Roma Hukuku">
+            <h3>Roma Hukuku</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="Roma Hukuku">Kaynak</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Year 2 -->
+      <div class="ak-pane" data-pane="y2">
+        <div class="ak-list">
+          <article class="ak-course" data-title="Ceza Hukuku">
+            <h3>Ceza Hukuku</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="TCK">TCK</button>
+              <button class="ak-link" data-term="Ceza Hukuku Özet">Özet</button>
+            </div>
+          </article>
+          <article class="ak-course" data-title="İdare Hukuku">
+            <h3>İdare Hukuku</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="İYUK">İYUK</button>
+              <button class="ak-link" data-term="İdare Hukuku Slayt">Slayt</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Year 3 -->
+      <div class="ak-pane" data-pane="y3">
+        <div class="ak-list">
+          <article class="ak-course" data-title="Ticaret Hukuku">
+            <h3>Ticaret Hukuku</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="TTK">TTK</button>
+              <button class="ak-link" data-term="Ticaret Hukuku Özet">Özet</button>
+            </div>
+          </article>
+          <article class="ak-course" data-title="Vergi Hukuku">
+            <h3>Vergi Hukuku</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="VUK">VUK</button>
+              <button class="ak-link" data-term="Vergi Hukuku Slayt">Slayt</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Year 4 -->
+      <div class="ak-pane" data-pane="y4">
+        <div class="ak-list">
+          <article class="ak-course" data-title="İcra ve İflas Hukuku">
+            <h3>İcra ve İflas Hukuku</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="İİK">İİK</button>
+              <button class="ak-link" data-term="İcra Hukuku Özet">Özet</button>
+            </div>
+          </article>
+          <article class="ak-course" data-title="Medeni Usul Hukuku">
+            <h3>Medeni Usul Hukuku</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="HMK">HMK</button>
+              <button class="ak-link" data-term="Medeni Usul Özet">Özet</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Year 5 -->
+      <div class="ak-pane" data-pane="y5">
+        <div class="ak-list">
+          <article class="ak-course" data-title="Milletlerarası Hukuk">
+            <h3>Milletlerarası Hukuk</h3>
+            <div class="ak-actions">
+              <button class="ak-link" data-term="Milletlerarası Özel Hukuk">MÖHUK</button>
+              <button class="ak-link" data-term="Uluslararası Hukuk">Genel</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIK GEÇEN MEVZUATLAR -->
+  <section class="ak-section">
+    <div class="ak-head">
+      <h2>Derslerde Sık Geçen Mevzuatlar</h2>
+    </div>
+    <div class="ak-chipbar" id="ak-mevzuat-chips">
+      <button class="ak-chip" data-term="Türk Medeni Kanunu">TMK</button>
+      <button class="ak-chip" data-term="Türk Borçlar Kanunu">TBK</button>
+      <button class="ak-chip" data-term="Türk Ticaret Kanunu">TTK</button>
+      <button class="ak-chip" data-term="Ceza Kanunu">TCK</button>
+      <button class="ak-chip" data-term="Vergi Usul Kanunu">VUK</button>
+      <button class="ak-chip" data-term="İcra ve İflas Kanunu">İİK</button>
+      <button class="ak-chip" data-term="Hukuk Muhakemeleri Kanunu">HMK</button>
+      <button class="ak-chip" data-term="İdari Yargılama Usulü Kanunu">İYUK</button>
+    </div>
+  </section>
+
+  <!-- RESOURCES (SLIDES & ASSIGNMENTS) -->
+  <section class="ak-section" id="ak-resources">
+    <div class="ak-head">
+      <h2>Kaynaklar</h2>
+      <div class="ak-pilltabs" role="tablist" aria-label="Kaynak türü">
+        <button class="ak-pill is-active" data-pill="slides" role="tab" aria-selected="true">Slaytlar</button>
+        <button class="ak-pill" data-pill="assign" role="tab" aria-selected="false">Ödevler</button>
+      </div>
+    </div>
+
+    <div class="ak-reswrap">
+      <div class="ak-respane is-active" data-respane="slides">
+        <ul class="ak-files">
+          <li data-title="Anayasa Hukuku Giriş - Hafta 1"><span>PDF</span> Anayasa Hukuku Giriş - Hafta 1 <em>• 02.10.2025</em><button class="ak-btn ghost">Görüntüle</button></li>
+          <li data-title="Medeni Hukuk - Kişiler Hukuku"><span>PDF</span> Medeni Hukuk - Kişiler Hukuku <em>• 08.10.2025</em><button class="ak-btn ghost">Görüntüle</button></li>
+          <li data-title="Ceza Hukuku - Suça Teşebbüs"><span>PDF</span> Ceza Hukuku - Suça Teşebbüs <em>• 15.10.2025</em><button class="ak-btn ghost">Görüntüle</button></li>
+        </ul>
+      </div>
+      <div class="ak-respane" data-respane="assign">
+        <ul class="ak-files">
+          <li data-title="HMK'da İspat Yükü - Kısa Ödev"><span>DOCX</span> HMK'da İspat Yükü - Kısa Ödev <em>• Teslim: 20.10.2025</em><button class="ak-btn ghost">İndir</button></li>
+          <li data-title="TTK'da Şirket Türleri Karşılaştırması"><span>DOCX</span> TTK'da Şirket Türleri Karşılaştırması <em>• Teslim: 27.10.2025</em><button class="ak-btn ghost">İndir</button></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDY PLANNER -->
+  <section class="ak-section" id="ak-planner">
+    <div class="ak-head">
+      <h2>Haftalık Çalışma Planı</h2>
+    </div>
+    <form class="ak-planform" id="ak-planform">
+      <input type="text" id="ak-task-input" placeholder="Görev ekle: Örn. 'HMK özet 30 dk'"/>
+      <button class="ak-btn" type="submit">Ekle</button>
+    </form>
+    <ul class="ak-tasks" id="ak-tasks"></ul>
+  </section>
+
+  <!-- ANNOUNCEMENTS -->
+  <section class="ak-section">
+    <div class="ak-head">
+      <h2>Duyurular</h2>
+    </div>
+    <ul class="ak-news">
+      <li><strong>Arşiv güncellendi:</strong> 2021–2025 RG taramaları eklendi.</li>
+      <li><strong>Yeni ders notu seti:</strong> Medeni Usul pratikleri yüklendi.</li>
+      <li><strong>Canlı oturum:</strong> “Vergi Hukukunda Güncel Tartışmalar” — 22 Ekim 20:00.</li>
+    </ul>
+  </section>
+</div>
+
+<!-- === Scoped Styles === -->
+<style>
+  body {
+      background-color: #d7e7f8;
+      margin: 0;
+      padding: 0;
+  }
+  /* scope */
+  .akademi-page { --ak-blue:#0701A2; --ak-ink:#111; --ak-bg:#f7f8fc; --ak-line:#e6e8ef; --ak-soft:#ffffff; }
+  .akademi-page{ font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; color:var(--ak-ink); }
+  .akademi-page *{ box-sizing: border-box; }
+
+  .ak-hero{ background: linear-gradient(180deg, rgba(7,1,162,0.06), rgba(7,1,162,0.0)); padding: 28px 16px 8px; position: sticky; top: 0; z-index: 1; backdrop-filter: blur(2px); }
+  .ak-hero-inner{ max-width: 1100px; margin: 0 auto; }
+  .ak-hero h1{ margin: 0 0 6px; font-size: 28px; color: var(--ak-blue); letter-spacing: .2px; }
+  .ak-sub{ margin: 0 0 16px; color:#4b4f67; }
+
+  .ak-search{ display:flex; gap:10px; align-items:center; }
+  .ak-search input{ flex:1; padding:12px 14px; border:1px solid var(--ak-line); border-radius: 12px; font-size:16px; outline: none; }
+  .ak-search input:focus{ border-color: var(--ak-blue); box-shadow: 0 0 0 3px rgba(7,1,162,.12); }
+  .ak-search button{ display:flex; align-items:center; gap:8px; background: var(--ak-blue); color:#fff; border:none; border-radius: 12px; padding: 10px 14px; cursor:pointer; }
+  .ak-search button:hover{ background:#fff; color: var(--ak-blue); box-shadow: inset 0 0 0 2px var(--ak-blue); }
+
+  .ak-tags{ display:flex; gap:8px; flex-wrap: wrap; margin-top:12px; }
+  .ak-chip{ background:#fff; border:1px solid var(--ak-line); border-radius: 999px; padding:6px 12px; cursor:pointer; font-size: 13px; }
+  .ak-chip:hover{ background: var(--ak-blue); color:#fff; border-color:var(--ak-blue); }
+
+  .ak-quick{ padding: 18px 16px; }
+  .ak-grid{ max-width:1100px; margin:0 auto; display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:12px; }
+  .ak-card{ background:#fff; border:1px solid var(--ak-line); border-radius:14px; padding:16px; text-decoration:none; color:inherit; display:block; }
+  .ak-card:hover{ box-shadow: 0 6px 24px rgba(7,1,162,.12); transform: translateY(-2px); }
+  .ak-card h3{ margin:8px 0 6px; font-size:18px; color: var(--ak-blue); }
+  .ak-card p{ margin:0; color:#555; font-size:14px; }
+  .ak-icon{ width:32px; height:32px; border-radius:8px; background: var(--ak-blue); position: relative; }
+  .ak-i-books::after{ content:"📚"; position:absolute; inset:0; display:grid; place-items:center; color:#fff; }
+  .ak-i-slides::after{ content:"🖥️"; position:absolute; inset:0; display:grid; place-items:center; color:#fff; }
+  .ak-i-assign::after{ content:"📝"; position:absolute; inset:0; display:grid; place-items:center; color:#fff; }
+  .ak-i-check::after{ content:"✅"; position:absolute; inset:0; display:grid; place-items:center; color:#fff; }
+
+  .ak-section{ padding: 8px 16px 18px; }
+  .ak-head{ max-width:1100px; margin: 0 auto 10px; display:flex; align-items:center; justify-content: space-between; gap:10px; }
+  .ak-head h2{ margin:0; font-size:20px; color: var(--ak-blue); }
+
+  .ak-tabs{ display:flex; gap:6px; flex-wrap: wrap; }
+  .ak-tab{ background:#fff; border:1px solid var(--ak-line); padding:8px 12px; border-radius: 999px; cursor:pointer; }
+  .ak-tab.is-active, .ak-tab:hover{ background: var(--ak-blue); color:#fff; border-color: var(--ak-blue); }
+
+  .ak-tabpanes{ max-width:1100px; margin: 0 auto; }
+  .ak-pane{ display:none; }
+  .ak-pane.is-active{ display:block; }
+  .ak-list{ display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:10px; }
+  .ak-course{ background:#fff; border:1px solid var(--ak-line); border-radius:12px; padding:14px; }
+  .ak-course h3{ margin:0 0 8px; font-size:16px; color:#222; }
+  .ak-actions{ display:flex; gap:8px; flex-wrap: wrap; }
+  .ak-link{ background:#fff; color: var(--ak-blue); border:1px solid var(--ak-blue); padding:6px 10px; border-radius:10px; cursor:pointer; }
+  .ak-link:hover{ background: var(--ak-blue); color:#fff; }
+
+  .ak-chipbar{ max-width:1100px; margin:0 auto; display:flex; gap:8px; flex-wrap: wrap; }
+
+  .ak-reswrap{ max-width:1100px; margin: 0 auto; }
+  .ak-pilltabs{ display:flex; gap:6px; }
+  .ak-pill{ background:#fff; border:1px solid var(--ak-line); padding:8px 12px; border-radius: 999px; cursor:pointer; }
+  .ak-pill.is-active, .ak-pill:hover{ background: var(--ak-blue); color:#fff; border-color: var(--ak-blue); }
+  .ak-respane{ display:none; }
+  .ak-respane.is-active{ display:block; }
+  .ak-files{ list-style:none; padding:0; margin:0; display:grid; gap:8px; }
+  .ak-files li{ background:#fff; border:1px solid var(--ak-line); border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:10px; justify-content: space-between; }
+  .ak-files li span{ background: var(--ak-blue); color:#fff; font-size:12px; border-radius:6px; padding:4px 6px; }
+  .ak-files li em{ color:#666; font-style: normal; }
+
+  .ak-btn{ background: var(--ak-blue); color:#fff; border:none; border-radius:10px; padding:8px 12px; cursor:pointer; }
+  .ak-btn.ghost{ background:#fff; color: var(--ak-blue); box-shadow: inset 0 0 0 2px var(--ak-blue); }
+  .ak-btn.ghost:hover{ background: var(--ak-blue); color:#fff; }
+
+  .ak-planform{ max-width:1100px; margin:0 auto 10px; display:flex; gap:8px; }
+  .ak-planform input{ flex:1; padding:10px 12px; border:1px solid var(--ak-line); border-radius:10px; font-size:14px; outline:none; }
+  .ak-planform input:focus{ border-color: var(--ak-blue); box-shadow: 0 0 0 3px rgba(7,1,162,.12); }
+  .ak-tasks{ max-width:1100px; margin:0 auto; list-style:none; padding:0; display:grid; gap:8px; }
+  .ak-tasks li{ background:#fff; border:1px solid var(--ak-line); border-radius:10px; padding:10px 12px; display:flex; align-items:center; justify-content: space-between; gap:10px; }
+  .ak-taskleft{ display:flex; align-items:center; gap:10px; }
+  .ak-taskleft input{ width:16px; height:16px; }
+  .ak-taskdel{ background:transparent; border:none; color:#d33; cursor:pointer; }
+
+  .ak-news{ max-width:1100px; margin:0 auto; list-style: none; padding:0; display:grid; gap:8px; }
+  .ak-news li{ background:#fff; border:1px solid var(--ak-line); border-radius:12px; padding:12px 14px; }
+
+  /* Responsive */
+  @media (max-width: 900px){
+    .ak-grid{ grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .ak-list{ grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+(function(){
+  const root = document.getElementById('akademi-root');
+  if(!root) return;
+
+  // ... (önceki kısım aynı kalıyor)
+
+  // === Görev listesi ===
+  const TASK_KEY = 'akademi-tasks';
+  const listEl = document.getElementById('ak-tasks');
+  const form = document.getElementById('ak-planform');
+  const input = document.getElementById('ak-task-input');
+
+  const renderTasks = () => {
+    const items = JSON.parse(localStorage.getItem(TASK_KEY) || '[]');
+    listEl.innerHTML = '';
+    items.forEach((it, idx)=>{
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div class="ak-taskleft">
+          <input type="checkbox" ${it.done ? 'checked':''} data-idx="${idx}" />
+          <span>${it.text}</span>
+        </div>
+        <button class="ak-taskdel" data-del="${idx}">Sil</button>
+      `;
+      listEl.appendChild(li);
+    });
+  };
+
+  const saveTasks = (items) => localStorage.setItem(TASK_KEY, JSON.stringify(items));
+
+  form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const text = (input.value || '').trim();
+    if(!text) return;
+    const items = JSON.parse(localStorage.getItem(TASK_KEY) || '[]');
+    items.push({text, done:false});
+    saveTasks(items);
+    input.value = '';
+    renderTasks();
+  });
+
+  listEl.addEventListener('click', (e)=>{
+    const del = e.target.closest('[data-del]');
+    if(del){
+      const idx = +del.getAttribute('data-del');
+      const items = JSON.parse(localStorage.getItem(TASK_KEY) || '[]');
+      items.splice(idx,1);
+      saveTasks(items);
+      renderTasks();
+      return;
+    }
+    const cb = e.target.closest('input[type="checkbox"][data-idx]');
+    if(cb){
+      const idx = +cb.getAttribute('data-idx');
+      const items = JSON.parse(localStorage.getItem(TASK_KEY) || '[]');
+      items[idx].done = cb.checked;
+      saveTasks(items);
+    }
+  });
+
+  renderTasks();
+})();
+</script>

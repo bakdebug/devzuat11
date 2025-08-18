@@ -1,0 +1,101 @@
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 720px;
+    background-color: #f5f5f5;
+    color: #0701A2;
+    border: 1.5px solid #0701A2;
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 1000;
+    font-family: 'Aptos', sans-serif;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .cookie-banner p {
+    margin: 10px 0;
+    font-size: 1rem;
+  }
+
+  .cookie-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 12px 0;
+  }
+
+  .cookie-btn {
+    padding: 8px 20px;
+    border: 1.5px solid #0701A2;
+    background-color: transparent;
+    color: #0701A2;
+    border-radius: 9999px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .cookie-btn:hover {
+    background-color: #0701A2;
+    color: white;
+  }
+
+  body.dark-theme .cookie-banner {
+    background-color: #0701A2;
+    color: white;
+    border-color: white;
+  }
+
+  body.dark-theme .cookie-btn {
+    border-color: white;
+    color: white;
+  }
+
+  body.dark-theme .cookie-btn:hover {
+    background-color: white;
+    color: #0701A2;
+  }
+
+
+</style>
+
+
+<!-- Cookie Banner -->
+<div id="cookie-banner" class="cookie-banner">
+  <p class="cookie-text">
+    Deneyiminizi iyileştirmek ve hizmetlerimizi geliştirebilmek amacıyla web sitemizde çerezleri kullanıyoruz.
+  </p>
+
+  <div class="cookie-buttons">
+    <button class="cookie-btn accept">Tümünü Kabul Et</button>
+    <button class="cookie-btn customize">Özelleştir</button>
+    <button class="cookie-btn reject">Tümünü Reddet</button>
+  </div>
+
+  <p class="cookie-timer">
+    Bu bilgilendirme <span id="countdown">10</span> saniye içerisinde kapanacaktır.
+    Dilerseniz çerezleri <strong>site tercihleri</strong> bölümünden yönetebilirsiniz.
+  </p>
+</div>
+
+
+<script>
+  let seconds = 10;
+  const countdownElement = document.getElementById("countdown");
+  const banner = document.getElementById("cookie-banner");
+
+  const timer = setInterval(() => {
+    seconds--;
+    countdownElement.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(timer);
+      banner.style.display = "none";
+    }
+  }, 1000);
+</script>

@@ -1,0 +1,342 @@
+
+
+<!-- Resmî Gazete — İçerik Parçası (route-root içine enjekte edilmeye uygun) -->
+<section id="rg-page" aria-label="Resmî Gazete Arşivi">
+  <style>
+
+body {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+    /* ====== RG: Temalar ve Scope ====== */
+    #rg-page{ --rg-primary:#0701A2; --rg-primary-600:#0a07c9; --rg-bg:#f6f7fb; --rg-muted:#6b7280; --rg-border:#e5e7eb; --rg-card:#ffffff; }
+    #rg-page{ font-family: Inter, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111827; }
+    #rg-page *{ box-sizing: border-box; }
+
+    /* Yerleşim */
+    #rg-wrap{ display:grid; grid-template-columns: 320px 1fr; gap:18px; padding:18px; padding-top:22px; min-height: calc(100vh - 60px); background: var(--rg-bg); }
+    @media (max-width: 1024px){ #rg-wrap{ grid-template-columns: 1fr; } }
+
+    /* Üst başlık + arama barı */
+    .rg-header{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin: 2px 0 12px; }
+    .rg-title{ font-size: 22px; font-weight: 700; color: var(--rg-primary); letter-spacing:.2px; }
+    .rg-searchbar{ flex:1; display:flex; gap:10px; align-items:center; }
+    .rg-searchbar .field{ position:relative; flex:1; }
+    .rg-searchbar input[type="text"],
+    .rg-searchbar input[type="number"]{
+      width:100%; height:42px; border:1px solid var(--rg-border); border-radius:10px; padding:0 12px 0 36px; outline:none; background:#fff;
+    }
+    .rg-searchbar input:focus{ border-color:var(--rg-primary); box-shadow:0 0 0 3px rgba(7,1,162,.12);}
+    .rg-searchbar .icon{
+      position:absolute; left:10px; top:50%; transform: translateY(-50%); color: var(--rg-muted); width:18px; height:18px;
+    }
+    .rg-btn{ height:42px; padding:0 16px; border:0; border-radius:10px; background:var(--rg-primary); color:#fff; font-weight:600; cursor:pointer; }
+    .rg-btn:hover{ background: var(--rg-primary-600); }
+    .rg-link{ color:var(--rg-primary); text-decoration:none; font-weight:500; }
+    .rg-link:hover{ text-decoration:underline; }
+
+    /* Sol sütun (takvim + hızlı filtreler) */
+    .rg-side{ background:var(--rg-card); border:1px solid var(--rg-border); border-radius:14px; padding:14px; }
+    .side-sec + .side-sec{ margin-top:14px; }
+    .side-title{ font-weight:700; font-size:14px; color:#111; margin: 2px 2px 8px; }
+    .rg-quick{ display:flex; flex-wrap:wrap; gap:8px; }
+    .chip{ padding:8px 12px; border:1px solid var(--rg-border); border-radius:999px; background:#fff; color:#111; cursor:pointer; font-size:13px; }
+    .chip.active, .chip:hover{ border-color: var(--rg-primary); color: var(--rg-primary); }
+
+    /* Takvim */
+    .rg-cal{ user-select:none; border:1px solid var(--rg-border); border-radius:12px; overflow:hidden; }
+    .cal-head{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:#fafafa; border-bottom:1px solid var(--rg-border);}
+    .cal-head .mttl{ font-weight:700; font-size:14px; }
+    .cal-grid{ display:grid; grid-template-columns: repeat(7, 1fr); }
+    .cal-dow{ background:#fbfbfb; color:#6b7280; font-size:12px; padding:8px 0; text-align:center; border-bottom:1px solid var(--rg-border);}
+    .cal-day{ padding:10px 0; text-align:center; cursor:pointer; border-right:1px solid var(--rg-border); border-bottom:1px solid var(--rg-border); background:#fff; }
+    .cal-day:nth-child(7n){ border-right:0; }
+    .cal-day.mute{ color:#9ca3af; background:#fafafa; }
+    .cal-day.today{ outline:2px solid rgba(7,1,162,.25); outline-offset:-2px; }
+    .cal-day.selected{ background: rgba(7,1,162,.08); color: var(--rg-primary); font-weight:700; }
+
+    /* Sağ sütun (filtre çubuk + sonuçlar) */
+    .rg-main{ display:flex; flex-direction:column; gap:14px; }
+    .rg-filters{ background:var(--rg-card); border:1px solid var(--rg-border); border-radius:14px; padding:10px; display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+    .pill{ padding:8px 12px; background:#fff; border:1px solid var(--rg-border); border-radius:999px; cursor:pointer; font-size:13px; }
+    .pill.active, .pill:hover{ border-color: var(--rg-primary); color:var(--rg-primary); }
+    .spacer{ flex:1; }
+    .rg-sort{ border:1px solid var(--rg-border); height:38px; border-radius:10px; padding:0 10px; }
+
+    .rg-results{ display:flex; flex-direction:column; gap:12px; }
+    .rg-card{ background:#fff; border:1px solid var(--rg-border); border-radius:12px; padding:12px 14px; display:grid; grid-template-columns: 1fr auto; gap:6px; }
+    .rg-card h4{ margin:0; font-size:16px; }
+    .rg-card .meta{ color:#6b7280; font-size:12px; }
+    .rg-card .go{ align-self:center; }
+    .rg-card .go a{ display:inline-flex; align-items:center; gap:6px; padding:8px 10px; border-radius:10px; background:var(--rg-primary); color:#fff; text-decoration:none; font-size:13px; }
+    .rg-card .go a:hover{ background: var(--rg-primary-600); }
+
+    .rg-pager{ display:flex; justify-content:center; gap:8px; margin:10px 0 18px; }
+    .rg-pagebtn{ width:36px; height:36px; display:grid; place-items:center; border:1px solid var(--rg-border); border-radius:8px; background:#fff; cursor:pointer; }
+    .rg-pagebtn.active, .rg-pagebtn:hover{ border-color: var(--rg-primary); color: var(--rg-primary); }
+
+    /* Mobil bazı ayarlar */
+    @media (max-width:1024px){
+      .rg-header{ flex-direction:column; align-items:stretch; }
+      .rg-searchbar{ width:100%; }
+    }
+  </style>
+
+  <div id="rg-wrap">
+    <!-- Sol taraf -->
+    <aside class="rg-side">
+      <!-- Hızlı tarihler -->
+      <section class="side-sec">
+        <div class="side-title">Hızlı Tarihler</div>
+        <div class="rg-quick">
+          <button class="chip" data-quick="today">Bugün</button>
+          <button class="chip" data-quick="yesterday">Dün</button>
+          <button class="chip" data-quick="thisweek">Bu Hafta</button>
+          <button class="chip" data-quick="thismonth">Bu Ay</button>
+          <button class="chip" data-quick="clear">Temizle</button>
+        </div>
+      </section>
+
+      <!-- Takvim -->
+      <section class="side-sec">
+        <div class="side-title">Takvim</div>
+        <div class="rg-cal" id="rg-cal">
+          <div class="cal-head">
+            <button class="rg-pagebtn" id="cal-prev" aria-label="Önceki Ay">‹</button>
+            <div class="mttl" id="cal-title">Ay Yıl</div>
+            <button class="rg-pagebtn" id="cal-next" aria-label="Sonraki Ay">›</button>
+          </div>
+          <div class="cal-grid" id="cal-grid-dow"></div>
+          <div class="cal-grid" id="cal-grid-days"></div>
+        </div>
+      </section>
+
+      <!-- Sayı / Tarih -->
+      <section class="side-sec">
+        <div class="side-title">Sayı ve Tarih</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div>
+            <label for="issueNo" style="display:block; font-size:12px; color:#6b7280; margin-bottom:6px;">Sayı No</label>
+            <input id="issueNo" type="number" min="1" placeholder="Örn: 32567" style="width:100%; height:38px; border:1px solid var(--rg-border); border-radius:10px; padding:0 10px;">
+          </div>
+          <div>
+            <label for="issueDate" style="display:block; font-size:12px; color:#6b7280; margin-bottom:6px;">Tarih</label>
+            <input id="issueDate" type="date" style="width:100%; height:38px; border:1px solid var(--rg-border); border-radius:10px; padding:0 10px;">
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Sağ taraf -->
+    <main class="rg-main">
+      <div class="rg-header">
+        <h1 class="rg-title">Resmî Gazete Arşivi</h1>
+        <div class="rg-searchbar" role="search">
+          <div class="field">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line>
+            </svg>
+            <input id="q" type="text" placeholder="Konu, kurum, numara…">
+          </div>
+          <div class="field" style="max-width:160px;">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="4" y="4" width="16" height="16" rx="2" ry="2" stroke-width="2"></rect>
+              <line x1="4" y1="10" x2="20" y2="10" stroke-width="2"></line>
+            </svg>
+            <input id="qIssue" type="number" placeholder="Sayı">
+          </div>
+          <button class="rg-btn" id="doSearch">Ara</button>
+          <a class="rg-link" id="clearAll" href="javascript:void(0)">Temizle</a>
+        </div>
+      </div>
+
+      <div class="rg-filters">
+        <button class="pill active" data-type="all">Tümü</button>
+        <button class="pill" data-type="kanun">Kanun</button>
+        <button class="pill" data-type="yonetmelik">Yönetmelik</button>
+        <button class="pill" data-type="teblig">Tebliğ</button>
+        <button class="pill" data-type="kurul">Kurul Kararı</button>
+        <div class="spacer"></div>
+        <select id="sortBy" class="rg-sort" aria-label="Sırala">
+          <option value="date_desc">Tarih (Yeni → Eski)</option>
+          <option value="date_asc">Tarih (Eski → Yeni)</option>
+          <option value="relevance">Alaka Düzeyi</option>
+        </select>
+      </div>
+
+      <section class="rg-results" id="rg-results" aria-live="polite"></section>
+
+      <nav class="rg-pager" id="rg-pager" aria-label="Sayfalandırma">
+        <button class="rg-pagebtn">‹</button>
+        <button class="rg-pagebtn active">1</button>
+        <button class="rg-pagebtn">2</button>
+        <button class="rg-pagebtn">3</button>
+        <button class="rg-pagebtn">›</button>
+      </nav>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const resultsEl = document.getElementById('rg-results');
+      const pills = Array.from(document.querySelectorAll('#rg-page .pill'));
+      const chips = Array.from(document.querySelectorAll('#rg-page .chip'));
+      const qEl = document.getElementById('q');
+      const qIssueEl = document.getElementById('qIssue');
+      const issueNoEl = document.getElementById('issueNo');
+      const issueDateEl = document.getElementById('issueDate');
+
+      // --- Dummy veri (örnek)
+      const SAMPLE = [
+        { t:'Kanun', no:'7510', date:'2024-03-12', title:'Bazı Kanunlarda Değişiklik Yapılmasına Dair Kanun', link:'#' },
+        { t:'Yönetmelik', no:'', date:'2024-02-01', title:'Binaların Yangından Korunması Hakkında Yönetmelik (Değişiklik)', link:'#' },
+        { t:'Tebliğ', no:'2024/11', date:'2024-01-17', title:'Vergi Usul Tebliği', link:'#' },
+        { t:'Kurul Kararı', no:'', date:'2023-11-05', title:'Enerji Piyasası Düzenleme Kurulu Kararı', link:'#' },
+        { t:'Kanun', no:'6102', date:'2011-01-13', title:'Türk Ticaret Kanunu', link:'#' }
+      ];
+
+      function fmtDate(iso){ const d=new Date(iso); return d.toLocaleDateString('tr-TR'); }
+
+      function render(list){
+        resultsEl.innerHTML = list.map(item => `
+          <article class="rg-card">
+            <div>
+              <h4>${item.title}</h4>
+              <div class="meta">${item.t}${item.no? ' • No: '+item.no:''} • ${fmtDate(item.date)}</div>
+            </div>
+            <div class="go"><a href="${item.link}">
+              Görüntüle
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M7 17l9-9" stroke-width="2"></path>
+                <polyline points="7 7 17 7 17 17" stroke-width="2" fill="none"></polyline>
+              </svg>
+            </a></div>
+          </article>
+        `).join('');
+      }
+
+      function doSearch(){
+        const type = (pills.find(p=>p.classList.contains('active'))?.dataset.type)||'all';
+        const q = qEl.value.trim().toLowerCase();
+        const qIssue = qIssueEl.value.trim();
+        const byIssue = issueNoEl.value.trim();
+        const byDate = issueDateEl.value;
+
+        let list = SAMPLE.slice();
+
+        if(type!=='all'){ list = list.filter(x => {
+          const key = type==='yonetmelik'?'Yönetmelik': type==='teblig'?'Tebliğ': type==='kurul'?'Kurul Kararı':'Kanun';
+          return x.t === key;
+        });}
+
+        if(q){ list = list.filter(x => x.title.toLowerCase().includes(q)); }
+        if(qIssue){ list = list.filter(x => (x.no||'').includes(qIssue)); }
+        if(byIssue){ list = list.filter(x => (x.no||'').includes(byIssue)); }
+        if(byDate){ list = list.filter(x => x.date === byDate); }
+
+        // Sort
+        const sortBy = document.getElementById('sortBy').value;
+        if(sortBy==='date_desc'){ list.sort((a,b)=> b.date.localeCompare(a.date)); }
+        if(sortBy==='date_asc'){ list.sort((a,b)=> a.date.localeCompare(b.date)); }
+
+        render(list);
+      }
+
+      // Pills state
+      pills.forEach(p => p.addEventListener('click', () => {
+        pills.forEach(x=>x.classList.remove('active'));
+        p.classList.add('active');
+        doSearch();
+      }));
+
+      // Quick date chips
+      chips.forEach(c => c.addEventListener('click', ()=> {
+        chips.forEach(x=>x.classList.remove('active'));
+        c.classList.add('active');
+        const now = new Date();
+        const todayISO = now.toISOString().slice(0,10);
+        if(c.dataset.quick==='today'){ issueDateEl.value = todayISO; }
+        else if(c.dataset.quick==='yesterday'){ const y=new Date(now); y.setDate(now.getDate()-1); issueDateEl.value = y.toISOString().slice(0,10); }
+        else if(c.dataset.quick==='thisweek'){ /* örnek: haftanın ilk gününü atayalım */ const w=new Date(now); w.setDate(now.getDate()-now.getDay()+1); issueDateEl.value = w.toISOString().slice(0,10); }
+        else if(c.dataset.quick==='thismonth'){ const m=new Date(now.getFullYear(), now.getMonth(), 1); issueDateEl.value = m.toISOString().slice(0,10); }
+        else { issueDateEl.value = ''; issueNoEl.value = ''; }
+        doSearch();
+      }));
+
+      // Search handlers
+      document.getElementById('doSearch').addEventListener('click', doSearch);
+      document.getElementById('clearAll').addEventListener('click', (e)=>{ e.preventDefault();
+        qEl.value=''; qIssueEl.value=''; issueNoEl.value=''; issueDateEl.value=''; pills.forEach(x=>x.classList.remove('active')); pills[0].classList.add('active'); chips.forEach(x=>x.classList.remove('active')); doSearch();
+      });
+
+      // --- Takvim üretimi ---
+      const dowEl = document.getElementById('cal-grid-dow');
+      const daysEl = document.getElementById('cal-grid-days');
+      const titleEl = document.getElementById('cal-title');
+      const prevBtn = document.getElementById('cal-prev');
+      const nextBtn = document.getElementById('cal-next');
+
+      const DOW = ['Pzt','Sal','Çar','Per','Cum','Cts','Paz'];
+      dowEl.innerHTML = DOW.map(d=>`<div class="cal-dow">${d}</div>`).join('');
+
+      let cur = new Date(); cur.setDate(1);
+
+      function buildCal(){
+        const year = cur.getFullYear(), month = cur.getMonth();
+        titleEl.textContent = cur.toLocaleString('tr-TR', { month:'long', year:'numeric' });
+
+        // kaç gün + önceki aydan kaç gün
+        const firstIdx = (new Date(year, month, 1).getDay()+6)%7; // Pazartesi=0
+        const daysInMonth = new Date(year, month+1, 0).getDate();
+        const daysInPrev = new Date(year, month, 0).getDate();
+
+        const cells = [];
+        // prev tail
+        for(let i=firstIdx-1;i>=0;i--){
+          const d = daysInPrev - i;
+          const iso = new Date(year, month-1, d).toISOString().slice(0,10);
+          cells.push({ d, iso, mute:true });
+        }
+        // current days
+        for(let d=1; d<=daysInMonth; d++){
+          const iso = new Date(year, month, d).toISOString().slice(0,10);
+          cells.push({ d, iso, mute:false });
+        }
+        // next head to fill 6 rows
+        while(cells.length % 7 !== 0) {
+          const idx = cells.length - (firstIdx + daysInMonth);
+          const d = idx + 1;
+          const iso = new Date(year, month+1, d).toISOString().slice(0,10);
+          cells.push({ d, iso, mute:true });
+        }
+
+        const todayISO = new Date().toISOString().slice(0,10);
+        const selectedISO = issueDateEl.value;
+
+        daysEl.innerHTML = cells.map(c => `
+          <div class="cal-day ${c.mute?'mute':''} ${c.iso===todayISO?'today':''} ${selectedISO && c.iso===selectedISO?'selected':''}" data-iso="${c.iso}">
+            ${c.d}
+          </div>
+        `).join('');
+
+        daysEl.querySelectorAll('.cal-day').forEach(el => {
+          el.addEventListener('click', ()=>{
+            issueDateEl.value = el.dataset.iso;
+            buildCal();
+            doSearch();
+          });
+        });
+      }
+      prevBtn.addEventListener('click', ()=>{ cur.setMonth(cur.getMonth()-1); buildCal(); });
+      nextBtn.addEventListener('click', ()=>{ cur.setMonth(cur.getMonth()+1); buildCal(); });
+
+      // İlk yükleme
+      buildCal();
+      render(SAMPLE);
+    })();
+  </script>
+</section>

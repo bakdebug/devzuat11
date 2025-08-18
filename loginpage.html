@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devzuat Giriş</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+
+  <style>
+    /* Ana renk ve tema değişkenleri */
+    :root {
+      --primary-color: #0701A2;  /* Ana renk, butonlarda kullanılıyor */
+      --bg-color: #0701A2;       /* Sayfa arka plan rengi */
+      --text-color: #333;        /* Yazı rengi */
+    }
+
+    /* Sayfa genel ayarları */
+    body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url('assets/bglogin.png'); /* 💡 resim yolu */
+  background-size: cover;     /* Ekrana tam yayılır */
+  background-position: center;/* Ortalanır */
+  background-repeat: no-repeat; /* Tekrarlamaz */
+}
+
+    /* Giriş kutusu */
+    .login-container {
+  width: 100%;
+  max-width: 500px;
+  height: 550px; /* 💡 Sabit yükseklik veriyoruz */
+  padding: 40px;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.3);  /* %70 saydam */
+  backdrop-filter: blur(11px);                 /* Daha yoğun cam efekti */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  overflow: hidden; /* hover efektleri içeride patlasın */
+  position: relative;
+  margin-top: 25px;
+}
+    /* Logo alanı */
+.logo {
+  display: flex;              /* Flexbox aktif edilir */
+  justify-content: center;    /* Yatayda ortalama */
+  margin-top: -20px;
+  margin-bottom: 4px;       /* Alttan boşluk bırak */
+  margin-left: 1px;        
+  -webkit-user-drag: none;    /* ✅ Chrome, Safari */
+  -khtml-user-drag: none;     /* eski Safari sürümleri için */
+  -moz-user-select: none;     /* Firefox */
+  -webkit-user-select: none;  /* Chrome, Safari */
+  -ms-user-select: none;      /* Edge */
+  user-select: none;          /* modern tarayıcılar */
+  pointer-events: none;       /* tüm fare etkileşimi devre dışı */
+}
+
+.logo img {
+  width: 433px;               /* Logo boyutu */
+  max-width: 103%;            /* Mobilde taşmayı engelle */
+}
+
+    /* Form input alanları */
+  /* E-posta ve şifre alanları */
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  width: 100%;                 /* Tam genişlik */
+  padding: 12px;               /* İç dolgu */
+  margin: 10px 0;              /* Yukarı-aşağı boşluk */
+  border: 1px solid #ddd;      /* Açık gri kenarlık */
+  border-radius: 8px;          /* Yuvarlatılmış köşeler */
+  font-size: 16px;             /* Yazı boyutu */
+  font-weight: 400;            /* Yazı kalınlığı */
+  box-sizing: border-box;      /* Padding dahil genişlik hesaplaması */
+}
+
+/* Giriş Yap butonu */
+.login-form button[type="submit"] {
+  width: 100%;                 /* Tam genişlik */
+  padding: 12px;               /* İç dolgu aynı */
+  margin: 10px 0;              /* Yukarı-aşağı boşluk aynı */
+  background-color: var(--primary-color);  /* Ana tema rengi */
+  color: white;                /* Yazı rengi */
+  border: none;                /* Kenarlık yok */
+  border-radius: 8px;          /* Aynı köşe yuvarlaklığı */
+  font-size: 16px;             /* Aynı yazı boyutu */
+  font-weight: 600;            /* Bir tık daha kalın */
+  cursor: pointer;             /* İmleç el olur */
+  box-sizing: border-box;      /* Genişlik hesaplamasında padding’i say */
+  margin-bottom: 8px;
+  margin-top: 4px;
+}
+
+.login-form button[type="submit"]:hover {
+  background-color: #c00010; /* 🔴 Kırmızıya yakın koyu bir ton */
+  font-weight: 700;          /* Daha kalın yazı (bold’a yakın) */
+}
+
+/* Ortak yapı */
+.social-login {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+/* Google butonu */
+.google-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: white;
+  color: #000000;
+  border: none; /* ✅ Çerçeve kaldırıldı */
+  box-sizing: border-box;
+  min-height: 44px;
+}
+
+/* Google butonu hover */
+.google-btn:hover {
+  background-color: #d7d7d7;     /* Daha açık siyah */
+  color: #000;                /* Yazı rengi siyah kalır */
+}
+
+/* Apple butonu */
+.apple-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  background-color: black;
+  color: white;
+  box-sizing: border-box;
+  min-height: 44px;
+}
+
+/* Apple butonu hover */
+.apple-btn:hover {
+  background-color: #3f3f3f;     /* Daha açık siyah */
+  color: #ffffff;                /* Yazı rengi beyaz kalır */
+}
+
+
+/* İkonlar */
+.google-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: inline-block;
+  flex-shrink: 0;
+  -webkit-user-drag: none;    /* ✅ Chrome, Safari */
+  -khtml-user-drag: none;     /* eski Safari sürümleri için */
+  -moz-user-select: none;     /* Firefox */
+  -webkit-user-select: none;  /* Chrome, Safari */
+  -ms-user-select: none;      /* Edge */
+  user-select: none;          /* modern tarayıcılar */
+  pointer-events: none;       /* tüm fare etkileşimi devre dışı */
+}
+
+.apple-btn img {
+  width: 27px;
+  height: 27px;
+  object-fit: contain;
+  display: inline-block;
+  flex-shrink: 0;
+  -webkit-user-drag: none;    /* ✅ Chrome, Safari */
+  -khtml-user-drag: none;     /* eski Safari sürümleri için */
+  -moz-user-select: none;     /* Firefox */
+  -webkit-user-select: none;  /* Chrome, Safari */
+  -ms-user-select: none;      /* Edge */
+  user-select: none;          /* modern tarayıcılar */
+  pointer-events: none;       /* tüm fare etkileşimi devre dışı */
+}
+
+ .form-options {
+  display: flex;
+  justify-content: space-between;  /* İkisi sağa ve sola yaslansın */
+  align-items: center;
+  margin: 10px 0;
+  font-size: 0.95em;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-color);
+}
+
+/* Beni Hatırla */
+.form-options .remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  font-size: 0.95em;
+}
+
+/* Checkbox kutucuğu özel boyutlandırma */
+.form-options .remember input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #0701A2;
+  cursor: pointer;
+}
+
+/* Normal yazı hali */
+.form-options .remember label {
+  font-weight: 400;
+  color:#ffffff;
+  transition: all 0.3s ease;
+}
+
+/* ✅ Kutucuk işaretliyse yazı kalın ve mavi olur */
+.form-options .remember input[type="checkbox"]:checked + label {
+  font-weight: 700; /* 600–700 arası ideal bold */
+  color: #0701A2;
+}
+
+/* Şifremi Unuttum linki */
+.form-options a {
+  color: #0701A2;
+  text-decoration: none;
+  font-weight: 400;
+  margin-right: 3px;
+  transition: all 0.2s ease;
+}
+
+/* ✅ Hover olunca rengi ve kalınlığı değişir */
+.form-options a:hover {
+  color: #c00010;
+  font-weight: 800; /* 700 yerine 600-800 arası da olur */
+  text-decoration:dashed;
+}
+
+/* Kaydol butonları */
+.signup-btn {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background-color: #71C5EF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+
+}
+
+/* Hover efekti */
+.signup-btn:hover {
+  background-color: #c00010;
+}
+
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <!-- Logonuzu assets klasörüne koyun ve yolu buraya yazın -->
+      <img src="assets/logo.png" alt="Devzuat Logo" />
+    </div>
+    <form class="login-form">
+  <!-- E-posta ve şifre alanları -->
+  <input type="email" placeholder="E-posta" required />
+  <input type="password" placeholder="Şifre" required />
+
+  <div class="form-options">
+  <div class="remember">
+    <input type="checkbox" id="rememberMe" />
+    <label for="rememberMe">Oturumu Açık Tut</label>
+  </div>
+  <a href="#">Şifremi Unuttum</a>
+</div>
+
+  <!-- Giriş Yap Butonu -->
+  <button type="submit" id="loginButton" >Giriş Yap</button>
+  
+
+  <!-- Sosyal Giriş Butonları -->
+  <div class="social-login">
+    <button class="google-btn">
+      <img src="assets/googlelogo.png" alt="Google" />
+      Google ile Devam Et
+    </button>
+    <button class="apple-btn">
+      <img src="assets/applewhitelogo.png" alt="Apple" />
+      Apple ile Devam Et
+    </button>
+  </div>
+ 
+  <!-- kayıt ol -->
+<div class="signup-button-wrapper">
+  <button type="button" class="signup-btn">Devzuat Hesabı Oluştur</button>
+</div>
+
+<script>
+  const loginButton = document.getElementById('loginButton');
+
+  loginButton.addEventListener('click', () => {
+    // Herhangi bir kontrol yapılmadan doğrudan yönlendirme
+    window.location.href = "mainpage.html";
+  });
+</script>
+
+
+</form>
+  </div>
+</body>
+</html>

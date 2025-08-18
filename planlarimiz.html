@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planlarımız</title>
+  <link href="https://fonts.googleapis.com/css2?family=Aptos&display=swap" rel="stylesheet" />
+  
+  
+  
+
+
+
+
+
+
+
+
+</head>
+<body class="light-theme">
+
+<div class="top-bar">
+  <div style="display: flex; align-items: center; height: 100%; justify-content: space-between; width: 100%; margin: 0 auto; padding-right: 10px;">
+    <a href="intropage.html"><img src="assets/nlogo.svg" alt="Devzuat Logo" class="top-bar-logo"></a>
+
+    <nav class="intro-nav" style="flex: 0.9; display: flex; justify-content: space-between; margin-left: 100px; margin-right: 0px;  align-items: center; font-family: 'Aptos', sans-serif;">
+      <a href="intropage.html">Devzuat Nedir?</a>
+      <a href="sunduklarimiz.html">Sunduklarımız</a>
+      <a href="planlarimiz.html">Planlarımız</a>
+      <a href="topluluk.html">Topluluk</a>
+      <a href="iletisim-destek.html">İletişim & Destek Alın</a>
+      <a href="hakkimizda.html">Hakkımızda</a>
+      <a href="faq.html">FAQ</a>
+    </nav>
+ 
+    <div class="dropdown" style="position: relative; margin-left: 38px; margin-right: -56px;">
+      <a href="#" class="dropdown-toggle">Site Tercihleri ▾</a>
+      <div class="dropdown-menu">
+        <!-- Çerezleri Yönet: Move to top, center-aligned -->
+        <div style="width:100%; display:flex; justify-content:center; align-items:center; margin-bottom: 32px;">
+          <button class="cookie-btn" style="margin: 0 auto;">Çerezleri Yönet</button>
+        </div>
+        <!-- Theme Selection -->
+        <label for="theme-toggle">Tema Seçimi</label>
+        <div id="theme-toggle">
+          <div id="light-option">Açık</div>
+          <div id="dark-option">Koyu</div>
+        </div>
+        <!-- Language Selection: Move to bottom, last section -->
+        <div style="margin-top: 32px;">
+          <label for="language-select" style="display: block; margin-bottom: 8px; font-weight: 500;">Dil Seçimi</label>
+          <select id="language-select" onchange="changeLanguage(this.value)" style="width: 100%; padding: 8px; border-radius: 10px; margin-bottom: 0;">
+            <option value="tr">Türkçe</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="ru">Русский</option>
+            <option value="zh">中文</option>
+            <option value="ar">العربية</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <a href="loginpage.html" class="cta-btn topbar-login-btn" style="margin-left: auto; margin-right: 10px; align-self: center;">Oturum Aç / Kaydol</a>
+  </div>
+</div>
+
+<main class="horizontal-scroll-container">
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.querySelector('.dropdown-toggle');
+  const menu = document.querySelector('.dropdown-menu');
+
+  let isVisible = false;
+
+  toggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // Prevent click from bubbling
+    isVisible = !isVisible;
+    menu.style.display = isVisible ? 'block' : 'none';
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+      isVisible = false;
+      menu.style.display = 'none';
+    }
+  });
+});
+
+
+// New theme logic: system preference, override, and resync
+(function () {
+  const THEME_KEY = 'userThemeOverride';
+  let userOverride = localStorage.getItem(THEME_KEY);
+
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    // Optionally update body class for legacy CSS
+    document.body.classList.toggle('dark-theme', theme === 'dark');
+    document.body.classList.toggle('light-theme', theme === 'light');
+    // Visually mark the selected toggle
+    const darkBtn = document.getElementById('dark-option');
+    const lightBtn = document.getElementById('light-option');
+    if (darkBtn && lightBtn) {
+      if (theme === 'dark') {
+        darkBtn.style.backgroundColor = '#0701A2';
+        darkBtn.style.color = 'white';
+        lightBtn.style.backgroundColor = 'white';
+        lightBtn.style.color = '#0701A2';
+      } else {
+        lightBtn.style.backgroundColor = '#0701A2';
+        lightBtn.style.color = 'white';
+        darkBtn.style.backgroundColor = 'white';
+        darkBtn.style.color = '#0701A2';
+      }
+    }
+  };
+
+  const getSystemTheme = () =>
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+  const initTheme = () => {
+    const systemTheme = getSystemTheme();
+    if (userOverride) {
+      applyTheme(userOverride);
+    } else {
+      applyTheme(systemTheme);
+    }
+  };
+
+  const darkBtn = document.getElementById('dark-option');
+  const lightBtn = document.getElementById('light-option');
+
+  if (darkBtn && lightBtn) {
+    darkBtn.addEventListener('click', () => {
+      applyTheme('dark');
+      localStorage.setItem(THEME_KEY, 'dark');
+      userOverride = 'dark';
+    });
+
+    lightBtn.addEventListener('click', () => {
+      applyTheme('light');
+      localStorage.setItem(THEME_KEY, 'light');
+      userOverride = 'light';
+    });
+  }
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    const systemTheme = e.matches ? 'dark' : 'light';
+    if (!userOverride) {
+      applyTheme(systemTheme);
+    } else if (userOverride === systemTheme) {
+      localStorage.removeItem(THEME_KEY);
+      userOverride = null;
+      applyTheme(systemTheme);
+    }
+  });
+
+  initTheme();
+})();
+
+</script>
+
+
+
+
+
+<style>
+  .top-bar {
+    width: 100%;
+    height: 60px;
+    background-color: #0701A2;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .top-bar-logo {
+    height: 48px;
+    filter: none;
+    mix-blend-mode: plus-lighter;
+    margin-left: 4px;
+  }
+@import url('https://fonts.cdnfonts.com/css/aptos');
+html {
+  scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+body {
+  font-family: 'Aptos', sans-serif;
+  background: white;
+  background-size: 400% 400%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
+
+.intro-wrapper {
+  width: 100%;
+  max-width: 100vw;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: auto;
+  z-index: 10;
+  padding-bottom: 20px;
+  margin-top: 0px;
+}
+
+.section {
+  padding: 60px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  min-height: auto;       /* ekranın tamamını kapsasın */
+}
+.section-img {
+  width: auto;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  position: relative;
+  z-index: 2;
+  margin-top: 80px;
+}
+.section-img img {
+  max-width: 800px;
+  height: auto;
+  margin-top: 70px;
+  margin-bottom: 100px;
+  outline: 4px solid #ffffff;
+  border-radius: 99px;
+  overflow: hidden;
+  background-color: white;
+}
+
+
+
+/* Removed .section h1 and .section-img h3 styles */
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 120px;              /* 2) Görsel ve metin arasındaki boşluk arttı */
+  padding-left: 40px;
+  max-width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  margin-top: -60px;
+}
+
+.image-container {
+  width: 450px;    /* 3) Görselleri 1.5x büyüttük (400 → 600) */
+  flex-shrink: 0;
+  max-width: 450px;
+}
+
+.text-container {
+  flex: 1;
+  padding-left: 20px;
+  max-width: 600px;
+  flex-shrink: 0;
+}
+
+.feature .text-container h3{
+  font-size: 3.6rem;
+  color: #0701A2;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+  font-family: "Aptos", "Segoe UI", sans-serif;
+}
+
+.shine-container {
+  position: relative;
+  display: inline-block;     /* İçerik (img) kadar genişlik/yükseklik alsın */
+  overflow: hidden;
+  line-height: 0;            /* Satır boşluğu kaynaklı ekstra boşluğu kaldır */
+  border-radius: 24px;       /* Görselin köşesiyle birebir */
+}
+
+.shine-container img {
+  display: block;
+  width: 100%;               /* Görsel kendi oranında */
+  height: auto;
+  border-radius: inherit;    /* Container köşesine uyum */
+  object-fit: cover;
+}
+
+.feature-card {
+  background: transparent;
+  border-radius: 16px;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  /* Center the card content horizontally and vertically */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.feature-card img {
+  width: 300px;
+  height: auto;
+  margin-bottom: 15px;
+  border-radius: 24px;
+}
+.feature-card .shine-container { border-radius: 24px; }
+
+@keyframes sparkle {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(2); }
+}
+.feature-card h3 {
+  font-size: 3.8rem !important;
+  color: #0701A2;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+}
+@media (max-width: 768px) {
+  .feature-card {
+    width: 90%;
+  }
+  .feature {
+    flex-direction: column;
+    align-items: center;
+    max-width: none;
+    padding-left: 0;
+    gap: 40px;
+  }
+  .image-container {
+    width: 100%;
+  }
+  .text-container {
+    padding-left: 0;
+    padding-top: 15px;
+    text-align: center;
+    max-width: 100%;
+  }
+}
+
+
+
+
+.intro-wrapper .section-img h1 {
+  font-size: 4.2rem !important;
+  color: #0701A2;
+  font-weight: 700 !important;
+  font-family: 'Aptos', sans-serif !important;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  white-space: normal;
+  max-width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-wrapper .section-img h3 {
+  font-size: 2.8rem !important;
+  font-weight: 300 !important;
+  color: #0701A2;
+  font-family: 'Aptos', sans-serif !important;
+  text-align: center;
+}
+
+/* Added navigation styles */
+.intro-nav {
+  display: flex;
+  gap: 22px;
+  margin-left: 30px;
+  align-items: center;
+  font-family: 'Aptos', sans-serif;
+}
+
+.intro-nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.intro-nav a:hover {
+  color: #f0f0f0;
+}
+
+.cta-btn.topbar-login-btn {
+  padding: 6px 14px;
+  border: 1.5px solid white;
+  border-radius: 9999px;
+  background-color: transparent;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  transition: all 0.3s ease;
+  font-family: 'Aptos', sans-serif;
+  font-size: 0.95rem;
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.cta-btn.topbar-login-btn:hover {
+  background-color: white;
+  color: #0701A2;
+  border-color: white;
+}
+</style>
+
+
+
+
+<style>
+
+
+body.light-theme {
+  background: white;
+  background-size: 400% 400%;
+  animation: waveBackground 5s ease infinite;
+  color: #0701A2;
+}
+
+body.dark-theme {
+  background: #0701A2;
+  background-size: 400% 400%;
+  animation: waveBackground 5s ease infinite;
+  color: white;
+}
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme p {
+  color: white !important;
+}
+
+body.dark-theme .topbar-login-btn {
+  border-color: white;
+  color: white;
+}
+
+body.dark-theme .topbar-login-btn:hover {
+  background-color: white;
+  color: #0701A2;
+}
+
+body, .topbar-login-btn, h1, h2, h3, p {
+  transition: all 0.5s ease;
+}
+  .bottom-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    margin: -20px auto 0 auto;
+    padding: 4px 20px;
+    background-color: transparent;
+    color: #0701A2;
+    border: 1.5px solid #0701A2;
+    border-radius: 9999px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.2rem;
+    font-weight: 340;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    box-shadow: none;
+    max-width: 320px;
+    justify-content: center;
+    width: 200px;
+    height: 38px;
+    line-height: 1;
+  }
+
+  .bottom-cta-btn:hover,
+  .bottom-cta-btn:focus {
+    background-color: #0701A2;
+    color: #fff;
+  }
+
+  .bottom-cta-btn:focus:not(:hover) {
+    background-color: transparent;
+    color: #0701A2;
+  }
+
+  .bottom-cta-btn:active {
+    background-color: #0701A2;
+    color: #fff;
+  }
+  .bottom-cta-btn .arrow {
+    margin-left: 8px;
+    display: inline-flex;
+    vertical-align: middle;
+  }
+
+  /* Icon styling for SVG inside button */
+  .bottom-cta-btn svg {
+    width: 1.25em;
+    height: 1.25em;
+    fill: currentColor;
+  }
+
+/* Dark theme overrides for bottom-cta-btn */
+body.dark-theme .bottom-cta-btn {
+  background-color: transparent;
+  color: white;
+  border-color: white;
+}
+
+body.dark-theme .bottom-cta-btn:hover {
+  background-color: white;
+  color: #0701A2;
+}
+
+body.dark-theme .bottom-cta-btn:focus:not(:hover) {
+    background-color: transparent;
+    color: #ffffff;
+  }
+
+
+
+.bottom-cta-btn-wrapper {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.progress-indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 99;
+}
+
+  .dot {
+    width: 20px;
+    height: 8px;
+    background-color: transparent;
+    border: 1px solid #0701A2;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    pointer-events: auto;
+    cursor: default;
+  }
+
+  .dot.active {
+    background-color: #0701A2;
+  }
+
+  body.dark-theme .dot {
+    background-color: transparent;
+    border-color: white;
+  }
+
+  body.dark-theme .dot.active {
+    background-color: white;
+  }
+
+/* New styles to avoid conflicts */
+.intro-wrapper .section-img h1 {
+  font-size: 4.2rem;
+  color: #0701A2;
+  font-weight: 700;
+  font-family: 'Aptos', sans-serif;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 30px;
+  margin-top: -40px;
+  white-space: normal;
+  max-width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intro-wrapper .section-img h3,
+.welcomeSubtitle {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #0701A2;
+  font-family: 'Aptos', sans-serif;
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 50px;
+  white-space: normal;
+  width: 100%;
+  max-width: 90vw;
+  padding: 0 24px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
+}
+
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    color: #0701A2;
+    border: 2px solid #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    min-width: 280px;
+    max-width: 340px;
+    min-height: 0;
+    z-index: 1001;
+    box-shadow: 0 4px 16px #817dff;
+    font-family: 'Aptos', sans-serif;
+    text-align: center;
+    margin-top: -16px;
+  }
+  body.dark-theme .dropdown-menu {
+    background-color: #0701A2;
+    color: white;
+    border: 1px solid #0701A2;
+  }
+#theme-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #0701A2;
+  border-radius: 9999px;
+  padding: 6px;
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+
+#theme-toggle div {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  font-family: 'Aptos', sans-serif;
+}
+
+#dark-option {
+  background-color: #0701A2;
+  color: white;
+  font-family: 'Aptos', sans-serif;
+}
+
+#light-option {
+  background-color: white;
+  color: #0701A2;
+  font-family: 'Aptos', sans-serif;
+}
+
+.dropdown-toggle {
+  color: white ;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 0;
+}
+
+
+body.dark-theme .dropdown-menu button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+body.dark-theme .dropdown-menu button:hover {
+  background-color: white;
+  color: #1a1a2e;
+}
+
+body.dark-theme .dropdown-menu select {
+  background-color: #0701A2;
+  color: white;
+  border: 1px solid white;
+}
+
+  body.dark-theme .dropdown-menu label {
+    color: white;
+  }
+
+  .dropdown-menu label {
+    font-size: 1.1rem;
+    font-family: 'Aptos', sans-serif;
+    display: block;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+/* Cookie button styles */
+#cookie-button,
+.cookie-btn {
+  width: 100%;
+  display: block;
+  text-align: center;
+  border-radius: 9999px;
+  font-family: 'Aptos', sans-serif;
+  padding: 10px 0;
+  font-size: 1rem;
+  background-color: transparent;
+  border: 1.5px solid #0701A2;
+  color: #0701A2;
+  transition: background 0.3s, color 0.3s;
+  cursor: pointer;
+  margin-top: 24px;
+}
+
+#cookie-button:hover,
+.cookie-btn:hover {
+  background-color: #0701A2;
+  color: white;
+}
+
+body.dark-theme #cookie-button,
+body.dark-theme .cookie-btn {
+  border-color: white;
+  color: white;
+}
+
+body.dark-theme #cookie-button:hover,
+body.dark-theme .cookie-btn:hover {
+  background-color: white;
+  color: #0701A2;
+}
+
+/* Dropdown menu form controls spacing and width */
+.dropdown-menu select,
+.dropdown-menu button,
+.dropdown-menu #theme-toggle {
+  margin-bottom: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#theme-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #0701A2;
+  border-radius: 9999px;
+  padding: 6px;
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+
+#theme-toggle div {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+#dark-option {
+  background-color: #0701A2;
+  color: white;
+}
+
+#light-option {
+  background-color: white;
+  color: #0701A2;
+}
+
+
+.dropdown-toggle {
+  color: white !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 0;
+}
+
+
+.faq-overlay {
+  position: fixed;
+  top: 70px; /* Navbar'ın altından başlasın */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 70px);
+  background-color: white;
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+
+  .cookie-btn {
+    font-family: 'Aptos', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 10px 20px;
+    border: 1.5px solid #0701A2;
+    border-radius: 9999px; /* Apple tarzı tam yuvarlak */
+    background-color: transparent;
+    color: #0701A2;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .cookie-btn:hover {
+    background-color: #0701A2;
+    color: white;
+  }
+
+  /* Koyu tema için */
+  body.dark-theme .cookie-btn {
+    background-color: transparent;
+    color: white;
+    border-color: white;
+  }
+
+  body.dark-theme .cookie-btn:hover {
+    background-color: white;
+    color: #0701A2;
+  }
+
+
+
+/* PRICING SECTION STYLES */
+  .pricing-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  background: transparent;
+  font-family: 'Aptos', sans-serif;
+  margin-top: 50px;
+}
+
+.pricing-heading {
+  font-size: 2.2rem;
+  color: #0701A2;
+  margin-bottom: 40px;
+}
+
+.pricing-cards-container {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  background-color: transparent;
+}
+
+  .pricing-card {
+    flex: 1 1 280px;
+    max-width: 340px;
+    border-radius: 24px;
+    padding: 36px 28px;
+    box-shadow: 0 8px 20px rgba(7,1,162,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .pricing-card:hover {
+    box-shadow: 0 0 0 1.5px #0701A2;
+    z-index: 2;
+  }
+
+  .pricing-card .plan-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #0701A2 !important;
+  }
+
+  .pricing-card .plan-desc {
+    font-size: 1rem;
+    margin-bottom: 16px;
+    color: #0701A2 !important;
+  }
+
+  .pricing-card .plan-price {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #0701A2;
+  }
+
+  .plan-price span {
+    font-size: 1rem;
+    color: #666;
+  }
+
+  .plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+
+  .plan-features li {
+    margin: 6px 0;
+    color: #0701A2 !important;
+  }
+
+  .plan-btn,
+  .plan-button {
+    border-radius: 9999px;
+    padding: 12px 28px;
+    font-weight: 440;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 2px solid #0701A2;
+    background: transparent;
+    color: #0701A2;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .plan-btn:hover,
+  .plan-button:hover {
+    background-color: #0701A2;
+    color: white;
+    text-decoration: none;
+  }
+
+  .plan-btn.filled {
+    background: #0701A2;
+    color: white;
+  }
+  .plan-btn.filled:hover {
+    background: white;
+    color: #0701A2;
+  }
+  .plan-btn.outline {
+    background: transparent;
+    border: 2px solid #0701A2;
+    color: #0701A2;
+  }
+  .plan-btn.outline:hover {
+    background: #0701A2;
+    color: white;
+  }
+
+  .devpro-discount-note {
+    background: #f2f1ff;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #0701A2;
+  }
+
+  .devpro-note {
+    color: #0701A2;
+    font-weight: 500;
+  }
+
+  /* Seçim (Selected) */
+  .pricing-card.selected {
+    outline: 5px solid #0701A2;
+    box-shadow: 3px #0701A299;
+    /* border removed, transform removed */
+  }
+
+   body.dark-theme .pricing-card.selected {
+    outline: 9px solid #ffffff;
+    box-shadow: 0 0 0 3px #ffffff;
+    /* border removed, transform removed */
+  }
+
+
+
+  /* Arka plan renkleri sabit */
+ .pricing-card.free {
+  background: #f3f4f9;
+}
+
+.pricing-card.recommended {
+  background: #e3f7eb;
+}
+
+.pricing-card.devpro {
+  background: #fff2cc;
+}
+
+  /* Premium badge */
+  .premium-badge {
+  position: absolute;
+  top: -15px;
+  right: -10px;
+  font-size: 1.8rem;           /* Biraz büyüttüm */
+  transform: rotate(37deg) scale(1.2);  /* Saat yönünde döndürdüm ve %20 büyüttüm */
+  transform-origin: center;
+  pointer-events: none;
+}
+
+/* Devam Et Butonu */
+.continue-wrapper {
+  margin-top: 60px;
+}
+
+.continue-btn {
+  border-radius: 9999px;
+  padding: 14px 40px;
+  font-size: 1rem;
+  font-weight: 440;
+  color: #0701A2;
+  border: 2px solid #0701A2;
+  background: transparent;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.continue-btn:hover {
+  background-color: #0701A2;
+  color: white;
+  box-shadow: 0 6px 20px rgba(7,1,162,0.2);
+  transform: translateY(-2px);
+}
+
+body.dark-theme .continue-btn {
+  border-radius: 9999px;
+  padding: 14px 40px;
+  font-size: 1rem;
+  font-weight: 440;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  background: transparent;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+body.dark-theme .continue-btn:hover {
+  background-color: #ffffff;
+  color: #0701A2;
+  box-shadow: 0 6px 20px rgba(7,1,162,0.2);
+  transform: translateY(-2px);
+}
+
+
+
+</style>
+
+  <!-- Planlar (Pricing Section) -->
+  <div id="plans-section">
+    <section class="pricing-section">
+      <h3 class="pricing-heading">Planlarımız</h3>
+      <div class="pricing-cards-container">
+        
+        <!-- Free Plan -->
+        <div class="pricing-card free plan-card">
+          <div>
+            <div class="plan-title">Free</div>
+            <div class="plan-price">Ücretsiz</div>
+            <div class="plan-desc">Topluluğa katıl, temel özellikleri keşfet.</div>
+            <ul class="plan-features">
+              <li>Topluluk erişimi</li>
+              <li>Sınırlı destek</li>
+            </ul>
+          </div>
+          <a href="loginpage.html" class="plan-btn outline">Hemen Başlayın</a>
+        </div>
+
+        <!-- Standart Plan -->
+        <div class="pricing-card recommended plan-card">
+          <div>
+            <div class="plan-title">Standart</div>
+            <div class="plan-price">$5 <span>/ ay</span></div>
+            <div class="plan-desc">Daha fazla özellik ve öncelikli destek.</div>
+            <ul class="plan-features">
+              <li>Reklamsız kullanım</li>
+              <li>Standart destek</li>
+              <li>Ekstra içeriklere erişim</li>
+            </ul>
+          </div>
+        <button class="plan-button filled start-trial" onclick="openMailOrder()">7 Gün Ücretsiz Dene</button>
+        </div>
+
+        <!-- DevPro Plan -->
+        <div class="pricing-card devpro plan-card">
+          <div class="premium-badge">👑</div>
+          <div>
+            <div class="plan-title">devPro</div>
+            <div class="plan-price">$8 <span>/ ay</span></div>
+            <div class="plan-desc">Profesyoneller için maksimum avantajlar.</div>
+            <ul class="plan-features">
+              <li>Tüm özellikler</li>
+              <li>1:1 destek</li>
+              <li>Özel Pro forum</li>
+              <li>Yeni özelliklere erken erişim</li>
+              <li>12 ay alımda %25 indirim</li>
+            </ul>
+          </div>
+          <button class="plan-btn filled start-trial" onclick="openMailOrder()">7 Gün Ücretsiz Dene</button>
+        </div>
+
+      </div>
+
+      <div class="continue-wrapper">
+        <a href="loginpage.html" class="continue-btn">Devam Et</a>
+      </div>
+    </section>
+  </div>
+
+  <div id="content-container"></div>
+
+  <script>
+    // Pricing card selection logic
+    const cards = document.querySelectorAll('.pricing-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      });
+    });
+  </script>
+
+  <script>
+    function openMailOrder() {
+      // Create overlay
+      const overlay = document.createElement('div');
+      overlay.id = 'mailorder-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100vw';
+      overlay.style.height = '100vh';
+      overlay.style.backgroundColor = 'white';
+      overlay.style.zIndex = '9999';
+      overlay.style.overflow = 'auto';
+
+      // Create iframe for mailorder.html
+      const iframe = document.createElement('iframe');
+      iframe.src = 'mailorder.html';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.border = 'none';
+
+      // Append iframe to overlay
+      overlay.appendChild(iframe);
+
+      // Append overlay to body
+      document.body.appendChild(overlay);
+    }
+  </script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

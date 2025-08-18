@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mevzuatlar — Devzuat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand:#0701A2;
+      --text:#0f172a;
+      --muted:#64748b;
+      --surface:#ffffff;
+      --surface-2:#f8fafc;
+      --radius:14px;
+      --shadow:0 10px 30px rgba(2,6,23,.1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:'Aptos', sans-serif;
+      color:var(--text);
+      background: linear-gradient(-45deg,
+    #b8d0eb,  /* Açık mavi */
+    #bcded8,  /* Açık yeşilimsi mavi */
+    #d9c8f1,  /* Lila - açık mor */
+    #a6d6d1,  /* Mint yeşili */
+    #c8d3f5   /* Lavanta tonu */);
+      background-size:400% 400%;
+      min-height:100vh;
+    }
+
+  
+ 
+    /* ===== PAGE CONTENT ===== */
+    .container{max-width:1100px; margin:24px auto; padding:0 16px}
+    .page-hero{
+      background:var(--surface); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:24px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .page-hero h1{margin:0; font-size:28px; color:var(--brand)}
+    .page-hero p{margin:6px 0 0; color:var(--muted)}
+
+    .hero-actions{display:flex; align-items:center; gap:10px}
+    .btn{
+      appearance:none; border:0; cursor:pointer; height:40px; padding:0 14px;
+      border-radius:10px; font-weight:600; letter-spacing:.2px;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn.primary{ background:var(--brand); color:#fff; }
+    .btn.primary:hover{ background:#0b0699 }
+    .btn.ghost{ background:#eef2ff; color:var(--brand) }
+    .btn.ghost:hover{ background:#e0e7ff }
+
+    /* Filter/Search area */
+    .filters{
+      margin-top:16px; background:var(--surface); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:16px; display:grid; gap:12px;
+      grid-template-columns: 1.4fr 1fr 1fr .8fr auto;
+    }
+    .input, select{
+      height:40px; width:100%; border:1px solid #e2e8f0; border-radius:10px; padding:0 12px;
+      font:inherit; outline:none; transition:border-color .2s, box-shadow .2s;
+      background:#fff;
+    }
+    .input:focus, select:focus{ border-color:#93c5fd; box-shadow:0 0 0 3px rgba(59,130,246,.2) }
+
+    /* Results table placeholder */
+    .card{
+      margin-top:16px; background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:0;
+    }
+    table{ width:100%; border-collapse:collapse; }
+    th, td{ padding:12px 14px; border-bottom:1px solid #edf2f7; }
+    th{ text-align:left; color:#475569; font-weight:600; background:#f8fafc }
+    tr:hover td{ background:#f9fbff }
+
+    /* Footer spacer */
+    .spacer{height:40px}
+    @media (max-width: 960px){
+      .filters{ grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- ===== PAGE BODY ===== -->
+  <main class="container">
+    <section class="page-hero">
+      <div>
+        <h1>Mevzuatlar</h1>
+        <p>Kanun, yönetmelik ve tebliğlerde hızlı arama ve filtreleme.</p>
+      </div>
+      <div class="hero-actions">
+        <button class="btn primary" id="btn-quick-search">Hızlı Arama</button>
+        <button class="btn ghost" onclick="location.href='index.html'">Ana sayfa</button>
+      </div>
+    </section>
+
+    <!-- Filtre/Arama Alanı -->
+    <section class="filters">
+      <input class="input" type="text" placeholder="Anahtar kelime / madde no…" />
+      <select>
+        <option value="">Tür (Tümü)</option>
+        <option>Kanun</option>
+        <option>Yönetmelik</option>
+        <option>Tebliğ</option>
+      </select>
+      <select>
+        <option value="">Kurum (Tümü)</option>
+        <option>TBMM</option>
+        <option>Resmî Gazete</option>
+        <option>Bakanlıklar</option>
+      </select>
+      <select>
+        <option value="">Yıl (Tümü)</option>
+        <option>2025</option>
+        <option>2024</option>
+        <option>2023</option>
+      </select>
+      <button class="btn primary" id="btn-apply">Uygula</button>
+    </section>
+
+    <!-- Sonuçlar Placeholder -->
+    <section class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Başlık</th>
+            <th>Tür</th>
+            <th>No</th>
+            <th>Tarih</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-results">
+          <tr><td>Örnek Kanun Başlığı</td><td>Kanun</td><td>1234</td><td>12.03.2024</td></tr>
+<tr><td>Örnek Yönetmelik</td><td>Yönetmelik</td><td>56</td><td>05.09.2023</td></tr>
+<tr><td>Örnek Tebliğ</td><td>Tebliğ</td><td>2023/11</td><td>17.11.2023</td></tr>
+<tr><td>Kamu İhale Kanunu</td><td>Kanun</td><td>4734</td><td>22.01.2002</td></tr>
+<tr><td>Çevre Koruma Yönetmeliği</td><td>Yönetmelik</td><td>89</td><td>14.05.2021</td></tr>
+<tr><td>Vergi Usul Tebliği</td><td>Tebliğ</td><td>2022/14</td><td>01.06.2022</td></tr>
+<tr><td>İş Sağlığı ve Güvenliği Kanunu</td><td>Kanun</td><td>6331</td><td>20.06.2012</td></tr>
+<tr><td>Gıda Güvenliği Yönetmeliği</td><td>Yönetmelik</td><td>112</td><td>11.11.2020</td></tr>
+<tr><td>Resmi Tatil Günleri Tebliği</td><td>Tebliğ</td><td>2024/02</td><td>02.01.2024</td></tr>
+<tr><td>Türk Ticaret Kanunu</td><td>Kanun</td><td>6102</td><td>13.01.2011</td></tr>
+<tr><td>Binaların Yangından Korunması Yönetmeliği</td><td>Yönetmelik</td><td>45</td><td>05.07.2019</td></tr>
+<tr><td>İhracat Genelgesi</td><td>Tebliğ</td><td>2019/07</td><td>10.02.2019</td></tr>
+<tr><td>Örnek Kanun Başlığı</td><td>Kanun</td><td>1234</td><td>12.03.2024</td></tr>
+<tr><td>Örnek Yönetmelik</td><td>Yönetmelik</td><td>56</td><td>05.09.2023</td></tr>
+<tr><td>Örnek Tebliğ</td><td>Tebliğ</td><td>2023/11</td><td>17.11.2023</td></tr>
+<tr><td>Kamu İhale Kanunu</td><td>Kanun</td><td>4734</td><td>22.01.2002</td></tr>
+<tr><td>Çevre Koruma Yönetmeliği</td><td>Yönetmelik</td><td>89</td><td>14.05.2021</td></tr>
+<tr><td>Vergi Usul Tebliği</td><td>Tebliğ</td><td>2022/14</td><td>01.06.2022</td></tr>
+<tr><td>İş Sağlığı ve Güvenliği Kanunu</td><td>Kanun</td><td>6331</td><td>20.06.2012</td></tr>
+<tr><td>Gıda Güvenliği Yönetmeliği</td><td>Yönetmelik</td><td>112</td><td>11.11.2020</td></tr>
+<tr><td>Resmi Tatil Günleri Tebliği</td><td>Tebliğ</td><td>2024/02</td><td>02.01.2024</td></tr>
+<tr><td>Türk Ticaret Kanunu</td><td>Kanun</td><td>6102</td><td>13.01.2011</td></tr>
+<tr><td>Binaların Yangından Korunması Yönetmeliği</td><td>Yönetmelik</td><td>45</td><td>05.07.2019</td></tr>
+<tr><td>İhracat Genelgesi</td><td>Tebliğ</td><td>2019/07</td><td>10.02.2019</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="spacer"></div>
+  </main>
+
+  <script>
+    // Basit dropdown kontrolü
+    (function(){
+      const dd = document.getElementById('accountMenu');
+      const toggle = document.getElementById('accountToggle');
+      if(!dd || !toggle) return;
+
+      toggle.addEventListener('click', ()=>{
+        dd.classList.toggle('open');
+        toggle.classList.toggle('open');
+      });
+
+      document.addEventListener('click',(e)=>{
+        if(!dd.contains(e.target)){
+          dd.classList.remove('open');
+          toggle.classList.remove('open');
+        }
+      });
+
+      // Oturum kapatma (placeholder)
+      const logout = document.getElementById('logoutBtn');
+      if(logout){
+        logout.addEventListener('click', ()=>{
+          // Burada gerçek logout işlemi yapılabilir; şimdilik giriş sayfasına dönelim
+          location.href = 'index.html';
+        });
+      }
+    })();
+
+    // Hızlı arama (sahte)
+    document.getElementById('btn-quick-search')?.addEventListener('click', ()=>{
+      alert('Hızlı arama bileşeni burada açılacak (placeholder).');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Çalışma Sayfası • DevCloud</title>
+<style>
+  /* ====== THEME (Devzuat) ====== */
+  :root{
+    --brand:#0701A2;           /* ana mavi */
+    --ink:#0b1020;             /* koyu metin */
+    --bg:#f4f6fb;              /* açık arka plan */
+    --card:#ffffff;            /* kart */
+    --muted:#6b7280;           /* ikincil metin */
+    --ok:#12b981;              /* yeşil */
+    --warn:#f59e0b;            /* amber */
+    --danger:#ef4444;          /* kırmızı */
+    --ring: 0 0 0 3px rgba(7,1,162,.15);
+    --shadow: 0 10px 30px rgba(2,6,23,.12);
+    --glass: rgba(255,255,255,.65);
+  }
+
+  /* ====== BASE RESET ====== */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font: 14.5px/1.4 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--ink); background:var(--bg);
+    display:flex; flex-direction:column;
+  }
+  button{font:inherit}
+
+  /* ====== APP SHELL ====== */
+  header.appbar{
+    position:sticky; top:0; z-index:1000;
+    height:64px; display:flex; align-items:center; gap:12px;
+    padding:0 16px; backdrop-filter: saturate(160%) blur(10px);
+    background:linear-gradient(180deg, var(--glass), rgba(255,255,255,.45));
+    border-bottom:1px solid rgba(7,1,162,.08);
+  }
+  .brand-chip{display:flex; align-items:center; gap:10px; padding:6px 10px; border-radius:12px}
+  .brand-chip img{height:40px}
+  .brand-chip strong{color:var(--brand); letter-spacing:.2px}
+
+  .toolbar{display:flex; align-items:center; gap:8px; margin-left:auto}
+  .btn{ --bg:transparent; --fg:var(--ink); --bd:rgba(2,6,23,.08);
+    height:36px; padding:0 12px; border:1px solid var(--bd); border-radius:10px;
+    background:var(--bg); color:var(--fg); display:inline-flex; align-items:center; gap:8px;
+    cursor:pointer; transition: all .18s ease; position:relative;
+  }
+  .btn .icon{width:18px; height:18px; display:inline-block; color:currentColor}
+  .btn:hover{ background:#fff; box-shadow:var(--shadow); border-color:transparent; transform: translateY(-1px)}
+  .btn.is-active{ background:var(--brand); color:#fff; border-color:transparent}
+  .btn.is-active:hover{ filter:brightness(1.05) }
+
+  /* segmented tool group */
+  .seg{display:flex; border:1px solid rgba(2,6,23,.08); border-radius:12px; overflow:hidden}
+  .seg .btn{border:0; border-radius:0; height:36px}
+  .seg .btn + .btn{border-left:1px solid rgba(2,6,23,.08)}
+
+  main.layout{flex:1; min-height:0; display:grid; grid-template-columns: 260px 1fr 300px; gap:16px; padding:16px;}
+
+  /* ====== PANELS ====== */
+  .panel{background:var(--card); border:1px solid rgba(2,6,23,.06); border-radius:16px; box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; min-height:0}
+  .panel-hd{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(2,6,23,.06)}
+  .panel-hd h3{margin:0; font-size:15px; color:var(--brand); letter-spacing:.2px}
+  .panel-bd{padding:12px; overflow:auto}
+
+  /* left – library */
+  .lib-actions{display:flex; gap:8px; margin-bottom:8px}
+  .file-item{display:flex; align-items:center; gap:10px; padding:10px; border:1px solid rgba(2,6,23,.08); border-radius:12px; margin-bottom:10px; cursor:pointer; transition:.18s}
+  .file-item:hover{box-shadow:var(--shadow); transform: translateY(-1px)}
+  .file-item .icon{width:20px; height:20px; color:var(--brand)}
+  .file-item small{color:var(--muted)}
+
+  /* center – viewer */
+  .viewer-wrap{position:relative; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#f8faff,#eef2ff); height:100%}
+  canvas#stage{background:#fff; border:1px solid rgba(2,6,23,.08); border-radius:12px; box-shadow:var(--shadow)}
+  .viewer-ctl{position:absolute; right:12px; bottom:12px; display:flex; gap:8px}
+
+  /* right – notes & meta */
+  .note-area{display:flex; flex-direction:column; gap:10px}
+  .input, textarea.input{width:100%; padding:10px 12px; border:1px solid rgba(2,6,23,.12); border-radius:10px; outline:0; transition:.15s; font:inherit}
+  .input:focus, textarea.input:focus{box-shadow:var(--ring); border-color:var(--brand)}
+  textarea.input{min-height:160px; resize:vertical}
+  .taglist{display:flex; flex-wrap:wrap; gap:8px}
+  .tag{padding:6px 10px; border-radius:999px; border:1px solid rgba(2,6,23,.12); color:var(--muted)}
+
+  /* DEVCloud badge */
+  .badge{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; background:rgba(7,1,162,.08); color:var(--brand); border-radius:999px}
+
+  /* responsive */
+  @media (max-width: 1100px){ main.layout{grid-template-columns:1fr; gap:12px} .viewer-ctl{right:8px; bottom:8px} }
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <div class="brand-chip">
+    <img src="assets/dclogo.svg" alt="Devzuat"/>
+    <strong>devCloud</strong>
+  </div>
+
+  <div class="seg" role="toolbar" aria-label="Araçlar">
+    <button class="btn is-active" id="t-pen" title="Kalem (P)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      Kalem
+    </button>
+    <button class="btn" id="t-eraser" title="Silgi (E)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21 9-9 4 4-9 9H7z"/><path d="M21 7l-4-4"/></svg>
+      Silgi
+    </button>
+    <button class="btn" id="t-high" title="Vurgu (H)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l-6 6v3h3l6-6"/><path d="M11 13 21 3l-2-2L9 11"/></svg>
+      Vurgu
+    </button>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn" id="open-file" title="Dosya Aç">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+      Aç
+    </button>
+    <button class="btn" id="upload-cloud" title="DevCloud'a yükle">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+      Yükle
+    </button>
+    <button class="btn" id="download-cloud" title="DevCloud'tan getir">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15"/><path d="M8 17l4 4 4-4"/><path d="M12 12v9"/></svg>
+      Getir
+    </button>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- Sol: Kütüphane -->
+  <section class="panel">
+    <div class="panel-hd">
+      <h3>Dosyalar</h3>
+      <span class="badge"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a2 2 0 0 0 2 2h7l5-5V6a2 2 0 0 0-2-2H9L7 6H6a2 2 0 0 0-2 2z"/></svg>devCloud</span>
+    </div>
+    <div class="panel-bd">
+      <div class="lib-actions">
+        <button class="btn" id="btn-upload"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4"/><path d="m6 10 6-6 6 6"/></svg>Yükle</button>
+        <button class="btn" id="btn-newnote"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M12 4v16"/></svg>Yeni</button>
+      </div>
+      <div class="file-item" data-open="Sample.pdf">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+        <div>
+          <strong>Örnek.pdf</strong><br/>
+          <small>PDF • 1.2 MB</small>
+        </div>
+      </div>
+      <div class="file-item" data-open="Slides.pptx">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v10h10"/></svg>
+        <div>
+          <strong>Sunum.pptx</strong><br/>
+          <small>Slayt • 18 MB</small>
+        </div>
+      </div>
+      <div class="file-item" data-open="Notlar.md">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h9l5 5v11.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 2v6h6"/></svg>
+        <div>
+          <strong>Ders Notları.md</strong><br/>
+          <small>Metin • 86 KB</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Orta: Görüntüleyici -->
+  <section class="panel">
+    <div class="panel-hd">
+      <h3>Görüntüleyici</h3>
+      <div class="seg">
+        <button class="btn" id="zoom-out" title="Uzaklaştır"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 15.5 19 19"/><circle cx="11" cy="11" r="8"/><path d="M8 11h6"/></svg></button>
+        <button class="btn" id="zoom-reset" title="%100"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></button>
+        <button class="btn" id="zoom-in" title="Yakınlaştır"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 15.5 19 19"/><circle cx="11" cy="11" r="8"/><path d="M8 11h6"/><path d="M11 8v6"/></svg></button>
+      </div>
+    </div>
+    <div class="panel-bd viewer-wrap">
+      <canvas id="stage" width="1100" height="700"></canvas>
+      <div class="viewer-ctl">
+        <button class="btn" id="clear"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>Temizle</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sağ: Notlar & meta -->
+  <section class="panel">
+    <div class="panel-hd"><h3>Notlar</h3></div>
+    <div class="panel-bd note-area">
+      <input class="input" id="note-title" placeholder="Not başlığı" />
+      <textarea class="input" id="note-body" placeholder="Bu belgeye ilişkin notlar..."></textarea>
+      <div class="taglist">
+        <span class="tag">#çalışma</span><span class="tag">#vize</span><span class="tag">#mevzuat</span>
+      </div>
+      <button class="btn" id="save-note"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V7l4-4h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z"/><path d="M17 21V7H7v14"/><path d="M7 3v4h10V3"/></svg>Kaydet</button>
+    </div>
+  </section>
+</main>
+
+<script>
+(()=>{
+  // ===== Toolbar state =====
+  const tools = { pen:'t-pen', eraser:'t-eraser', high:'t-high' };
+  let curTool = 'pen';
+  const setTool = (t)=>{
+    curTool = t;
+    Object.values(tools).forEach(id=>document.getElementById(id).classList.remove('is-active'));
+    document.getElementById(tools[t]).classList.add('is-active');
+  };
+  document.getElementById('t-pen').onclick = ()=> setTool('pen');
+  document.getElementById('t-eraser').onclick = ()=> setTool('eraser');
+  document.getElementById('t-high').onclick = ()=> setTool('high');
+  window.addEventListener('keydown',e=>{
+    if(e.key==='p' || e.key==='P') setTool('pen');
+    if(e.key==='e' || e.key==='E') setTool('eraser');
+    if(e.key==='h' || e.key==='H') setTool('high');
+  });
+
+  // ===== Canvas drawing =====
+  const cvs = document.getElementById('stage');
+  const ctx = cvs.getContext('2d');
+  let drawing=false, last=null, zoom=1;
+
+  function setStrokeForTool(){
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    if(curTool==='pen'){
+      ctx.strokeStyle = '#111827';
+      ctx.lineWidth = 2.6;
+    }else if(curTool==='eraser'){
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.lineWidth = 12;
+    }else if(curTool==='high'){
+      ctx.strokeStyle = 'rgba(255, 230, 0, 0.55)';
+      ctx.lineWidth = 14;
+    }
+  }
+
+  function pos(e){
+    const rect = cvs.getBoundingClientRect();
+    return { x: (e.clientX-rect.left)/zoom, y:(e.clientY-rect.top)/zoom };
+  }
+
+  function drawTo(p){
+    if(!last){ last=p; return; }
+    setStrokeForTool();
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    last=p;
+  }
+
+  cvs.addEventListener('pointerdown', e=>{ drawing=true; last=pos(e); cvs.setPointerCapture(e.pointerId);});
+  cvs.addEventListener('pointermove', e=>{ if(drawing) drawTo(pos(e)); });
+  cvs.addEventListener('pointerup',   e=>{ drawing=false; last=null; cvs.releasePointerCapture(e.pointerId);});
+  cvs.addEventListener('pointercancel', ()=>{ drawing=false; last=null; });
+
+  // ===== Zoom (CSS transform) =====
+  function applyZoom(){
+    cvs.style.transformOrigin = 'center center';
+    cvs.style.transform = `scale(${zoom})`;
+  }
+  document.getElementById('zoom-in').onclick = ()=>{ zoom=Math.min(3, zoom+0.1); applyZoom(); };
+  document.getElementById('zoom-out').onclick= ()=>{ zoom=Math.max(0.5, zoom-0.1); applyZoom(); };
+  document.getElementById('zoom-reset').onclick= ()=>{ zoom=1; applyZoom(); };
+
+  // ===== Clear =====
+  document.getElementById('clear').onclick = ()=>{
+    ctx.clearRect(0,0,cvs.width,cvs.height);
+  };
+
+  // ===== Library interactions (stubs) =====
+  document.querySelectorAll('[data-open]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      alert('DevCloud: "'+el.getAttribute('data-open')+'" yüklendi (örnek).');
+    });
+  });
+  document.getElementById('upload-cloud').onclick=()=>alert('DevCloud\'a yükleme (örnek).');
+  document.getElementById('download-cloud').onclick=()=>alert('DevCloud\'tan getirme (örnek).');
+  document.getElementById('btn-upload').onclick=()=>alert('Dosya yükle (örnek).');
+  document.getElementById('btn-newnote').onclick=()=>alert('Yeni boş tuval oluşturuldu (örnek).');
+
+  // ===== Notes (localStorage demo) =====
+  const key='devcloud-note';
+  const t=document.getElementById('note-title');
+  const b=document.getElementById('note-body');
+  const save=()=>{
+    localStorage.setItem(key, JSON.stringify({title:t.value, body:b.value, ts:Date.now()}));
+    const btn=document.getElementById('save-note');
+    btn.classList.add('is-active'); setTimeout(()=>btn.classList.remove('is-active'), 600);
+  };
+  document.getElementById('save-note').onclick=save;
+  try{
+    const data=JSON.parse(localStorage.getItem(key)||'null');
+    if(data){ t.value=data.title||''; b.value=data.body||''; }
+  }catch{}
+})();
+</script>
+
+</body>
+</html>
